@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="employeeApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+	<style type="text/css">
+		td i:hover {
+			cursor: pointer;
+		}
+	</style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body data-ng-controller="EmpController">
+    
+    <div class="container" >
+    	<h3>Welcome to employeeApp</h3>
+    	<div class="row">
+    		<div class="col-lg-12">
+    			<div class="row">
+    				<div class="col-lg-4">
+	    				<button type="button" class="btn btn-primary" data-ng-click="listAllEmployees()">List All Employees</button>
+	    				<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Create Employee</button>
+    				</div>
+    				<div class="col-lg-8">
+    					<div data-ng-show="message.length > 0" class="alert alert-success" role="alert">
+					      <strong>Success!</strong> {{message}}
+					    </div>
+    				</div>
+    			</div>    			
+    		</div>
+    	</div>
+    	<h4></h4>
+    	<div class="row">
+    		<div class="col-lg-12">
+    			<table class="table table-bordered">
+			      <thead>
+			        <tr>
+			          <th>Emp ID</th>
+			          <th>First Name</th>
+			          <th>Last Name</th>
+			          <th>Email</th>
+			          <th>Phone</th>
+			          <th style="text-align:center">Actions</th>
+			        </tr>
+			      </thead>
+			      <tbody>
+			        <tr data-ng-repeat="emp in employees">
+			          <th scope="row">{{emp.id}}</th>
+			          <td>{{emp.firstName}}</td>
+			          <td>{{emp.lastName}}</td>
+			          <td>{{emp.email}}</td>
+			          <td>{{emp.phone}}</td>
+			          <td style="text-align:center">
+			          	<i data-ng-click="showUpdateModal(emp)" class="glyphicon glyphicon-edit"></i> | 
+			          	<i data-ng-click="deleteEmployee(emp.id)" class="glyphicon glyphicon-trash"></i>
+			          </td>
+			        </tr>
+			      </tbody>
+			    </table>
+    		</div>
+    	</div>
+    </div>
+	
+	<!-- Modal window to create an employee -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+	        <h4>This will create employee</h4>
+	        <div class="row">
+	        	<div class="col-lg-12">
+	        	
+	        	</div>
+	        </div>
+	        <form class="form-horizontal">
+			  <div class="form-group">
+			    <label for="inputEmail3" class="col-sm-3 control-label">First Name</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" data-ng-model="employee.firstName" placeholder="First Name">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputPassword3" class="col-sm-3 control-label">Last Name</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" data-ng-model="employee.lastName" placeholder="Last Name">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputPassword3" class="col-sm-3 control-label">Email</label>
+			    <div class="col-sm-9">
+			      <input type="email" class="form-control" data-ng-model="employee.email" placeholder="Email">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputPassword3" class="col-sm-3 control-label">Phone</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" data-ng-model="employee.phone" placeholder="Phone">
+			    </div>
+			  </div>	
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="createEmployee()">Create</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- Modal window to update an employee -->
+	<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="updateModalLabel">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+	        <h4>This will create employee</h4>
+	        <div class="row">
+	        	<div class="col-lg-12">
+	        	
+	        	</div>
+	        </div>
+	        <form class="form-horizontal">
+			  <div class="form-group">
+			    <label for="inputEmail3" class="col-sm-3 control-label">First Name</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" data-ng-model="employee.firstName" placeholder="First Name">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputPassword3" class="col-sm-3 control-label">Last Name</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" data-ng-model="employee.lastName" placeholder="Last Name">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputPassword3" class="col-sm-3 control-label">Email</label>
+			    <div class="col-sm-9">
+			      <input type="email" class="form-control" data-ng-model="employee.email" placeholder="Email">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputPassword3" class="col-sm-3 control-label">Phone</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" data-ng-model="employee.phone" placeholder="Phone">
+			    </div>
+			  </div>	
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="updateEmployee()">Save</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+    <script src="assets/js/angular.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
+    <script type="text/javascript">
+    	
+    	angular.module("employeeApp", [])
+    		.controller("EmpController", function( $scope, $http, $timeout ){
+    			console.log("EmpController is called");
+    			
+    			$scope.listAllEmployees = function(){
+    				$http.get("http://localhost:8080/SpringRestCrud/rest/employee/list")
+	    				.then(function( resp ){
+	    					console.log("Response in list : ", resp.data);
+	    					$scope.employees = resp.data;
+	    				});
+    			};
+    			
+    			$scope.createEmployee = function(){
+    				
+    				var employee = {
+    					    "firstName": $scope.employee.firstName,
+    					    "lastName": $scope.employee.lastName,
+    					    "email": $scope.employee.email,
+    					    "phone": $scope.employee.phone
+    					};
+    				
+    				console.log("employee : ", employee);
+    				
+    				$http.post("http://localhost:8080/SpringRestCrud/rest/employee/create", employee)
+	    				.then(function( resp ){
+	    					console.log("Response in create : ", resp.data);
+	    					$scope.message = resp.data.message;
+	    					$scope.listAllEmployees();	
+	    					
+	    					$scope.employee.firstName = "";
+    					    $scope.employee.lastName = "";
+    					    $scope.employee.email = "";
+    					    $scope.employee.phone = "";
+	    				});
+    				$timeout(function(){ $scope.message = "";}, 2000);
+    			};
+    			
+				$scope.deleteEmployee = function( empId ){
+    				
+    				$http.get("http://localhost:8080/SpringRestCrud/rest/employee/delete/" + empId)
+	    				.then(function( resp ){
+	    					console.log("Response in delete : ", resp.data);
+	    					$scope.message = resp.data.message;
+	    					$scope.listAllEmployees();	    					
+	    				});
+    					
+    				$timeout(function(){ $scope.message = "";}, 2000);
+    			};
+    			
+				$scope.updateEmployee = function(){
+					
+    				var employee = {
+    					    "firstName": $scope.employee.firstName,
+    					    "lastName": $scope.employee.lastName,
+    					    "email": $scope.employee.email,
+    					    "phone": $scope.employee.phone
+    					};
+    				
+    				var empId = $scope.employee.id;
+    				console.log("employee : ", employee);
+    				
+    				$http.post("http://localhost:8080/SpringRestCrud/rest/employee/update/" + empId, employee)
+	    				.then(function( resp ){
+	    					console.log("Response in create : ", resp.data);
+	    					$scope.message = resp.data.message;
+	    					$scope.listAllEmployees();	
+	    				});
+    				$timeout(function(){ $scope.message = "";}, 2000);
+    			};
+    			
+    			$scope.showUpdateModal = function( emp ){
+    				console.log("empId in update modal ; ", emp);
+    				$scope.employee = emp;
+    				
+    				$('#updateModal').modal("show");
+    			}
+    			
+    		})
+    </script>
+  </body>
+</html>
